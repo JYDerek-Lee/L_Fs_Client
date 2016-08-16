@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 const char SERVER_IP[] = "127.0.0.1";
-const unsigned short PORT_NUMBER = 31400;
+const unsigned short PORT_NUMBER = 6666;
 
 namespace L {
 	class TCP_Client {
@@ -29,6 +29,9 @@ namespace L {
 
 		boost::asio::io_service& m_io_service;
 		boost::asio::ip::tcp::socket m_Socket;
-		char m_ReceiveBuffer[10000];
+		char m_ReceiveBuffer[1024];
+		//std::string m_ReceiveBuffer;
+		std::string mbuffer;
+		std::string m_WriteMessage;
 	};
 }

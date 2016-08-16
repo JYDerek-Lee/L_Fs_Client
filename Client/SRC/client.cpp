@@ -16,9 +16,6 @@ void L::TCP_Client::upload(std::string file_name) {
 	ifs.close();
 }
 void L::TCP_Client::PostWrite() {
-	std::string mbuffer;
-	std::string m_WriteMessage;
-
 	Menu();
 
 	if (m_Socket.is_open() == false) {
@@ -53,6 +50,7 @@ void L::TCP_Client::PostWrite() {
 
 void L::TCP_Client::PostReceive() {
 	memset(&m_ReceiveBuffer, 0x00, sizeof(m_ReceiveBuffer));
+	//std::cout << "Memset Okey" << std::endl;
 
 	m_Socket.async_read_some(boost::asio::buffer(m_ReceiveBuffer),
 		boost::bind(&TCP_Client::handle_receive, this,
@@ -84,13 +82,13 @@ void L::TCP_Client::handle_receive(const boost::system::error_code& error, size_
 	}
 	else {
 		const std::string strRecvMessage = m_ReceiveBuffer;
-		std::cout << "Message from Server: " << strRecvMessage << std::endl;
+		std::cout << "====== Message from Server ====== \n" << strRecvMessage << std::endl;
 		PostWrite();
 	}
 }
 
 void L::TCP_Client::Menu() {
-	std::cout << "========== Menual ==========" << std::endl;
+	std::cout << "\n\n========== Menual ==========" << std::endl;
 	std::cout << "1. Path (pwd)" << std::endl;
 	std::cout << "2. File / Forder List (ls)" << std::endl;
 	std::cout << "3. Create Forder (mkdir ForderName)" << std::endl;

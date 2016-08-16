@@ -3,7 +3,6 @@
 
 int main() {
 	boost::asio::io_service io_service;
-
 	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(SERVER_IP), PORT_NUMBER);
 
 	L::TCP_Client client(io_service);
