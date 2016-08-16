@@ -5,13 +5,19 @@ void L::TCP_Client::uploadFile(std::string file_name) {
 	char send_buf[1024] = { 0, };
 	std::ifstream ifs;
 	ifs.open(file_name);
-	
+
+	//std::string fileSize = std::to_string(sizeof(file_name));
+	//m_Socket.write_some(boost::asio::buffer(fileSize));
+
 	while (ifs.getline(send_buf, sizeof(send_buf))) {
 		if (send_buf == NULL) break;
-
+		std::cout << sizeof(send_buf) << std::endl;
 		m_Socket.write_some(boost::asio::buffer(send_buf));
 		std::cout << " sendData : " << send_buf << std::endl;
 	}
+	
+	strcpy_s(send_buf, "END");
+	m_Socket.write_some(boost::asio::buffer(send_buf));
 
 	ifs.close();
 }
