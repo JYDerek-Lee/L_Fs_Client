@@ -16,13 +16,15 @@ void L::TCP_Client::upload(std::string file_name) {
 	ifs.close();
 }
 void L::TCP_Client::PostWrite() {
-	std::string m_WriteMessage;
 	std::string mbuffer;
+	std::string m_WriteMessage;
+
 	Menu();
 
 	if (m_Socket.is_open() == false) {
 		return;
 	}
+
 	getline(std::cin, m_WriteMessage);
 
 	std::stringstream msgBuffer(m_WriteMessage);
@@ -30,19 +32,21 @@ void L::TCP_Client::PostWrite() {
 
 	if (mbuffer == "upload") {
 		boost::asio::async_write(m_Socket, boost::asio::buffer(m_WriteMessage),
-			boost::bind(&TCP_Client::handle_write, this,
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred)
-			);
+			boost::bind(&TCP_Client::handle_write, 
+			    this,
+			    boost::asio::placeholders::error,
+			    boost::asio::placeholders::bytes_transferred)
+		);
 		msgBuffer >> mbuffer;
 		upload(mbuffer);
 	}
 	else {
 		boost::asio::async_write(m_Socket, boost::asio::buffer(m_WriteMessage),
-			boost::bind(&TCP_Client::handle_write, this,
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred)
-			);
+			boost::bind(&TCP_Client::handle_write, 
+			    this,
+			    boost::asio::placeholders::error,
+			    boost::asio::placeholders::bytes_transferred)
+		);
 	}
 	PostReceive();
 }
@@ -52,10 +56,9 @@ void L::TCP_Client::PostReceive() {
 
 	m_Socket.async_read_some(boost::asio::buffer(m_ReceiveBuffer),
 		boost::bind(&TCP_Client::handle_receive, this,
-		boost::asio::placeholders::error,
-		boost::asio::placeholders::bytes_transferred)
-		);
-
+		    boost::asio::placeholders::error,
+		    boost::asio::placeholders::bytes_transferred)
+	);
 }
 
 void L::TCP_Client::handle_connect(const boost::system::error_code& error) {
