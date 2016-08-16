@@ -22,7 +22,7 @@ namespace L {
 		void Menu();
 		void PostWrite();
 		void PostReceive();
-		void upload(std::string file_name);
+		void uploadFile(std::string file_name);
 		void handle_connect(const boost::system::error_code& error);
 		void handle_write(const boost::system::error_code& error, size_t bytes_transferred);
 		void handle_receive(const boost::system::error_code& error, size_t bytes_transferred);

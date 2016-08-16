@@ -1,27 +1,27 @@
 #include "stdafx.h"
 #include "client.h"
 
-void L::TCP_Client::upload(std::string file_name) {
+void L::TCP_Client::uploadFile(std::string file_name) {
 	char send_buf[1024] = { 0, };
-	std::string res;
 	std::ifstream ifs;
 	ifs.open(file_name);
-
+	
 	while (ifs.getline(send_buf, sizeof(send_buf))) {
-		//res += send_buf;
-		m_Socket.write_some(boost::asio::buffer(res));
-		//res += '\n';
+		if (send_buf == NULL) break;
+
+		m_Socket.write_some(boost::asio::buffer(send_buf));
+		std::cout << " sendData : " << send_buf << std::endl;
 	}
-	//m_Socket.write_some(boost::asio::buffer(res));
+
 	ifs.close();
 }
+
 void L::TCP_Client::PostWrite() {
 	Menu();
 
 	if (m_Socket.is_open() == false) {
 		return;
 	}
-
 	getline(std::cin, m_WriteMessage);
 
 	std::stringstream msgBuffer(m_WriteMessage);
@@ -35,7 +35,8 @@ void L::TCP_Client::PostWrite() {
 			    boost::asio::placeholders::bytes_transferred)
 		);
 		msgBuffer >> mbuffer;
-		upload(mbuffer);
+		uploadFile(mbuffer);
+		std::cout << "upload is End" << std::endl;
 	}
 	else {
 		boost::asio::async_write(m_Socket, boost::asio::buffer(m_WriteMessage),
