@@ -1,20 +1,18 @@
 #include "stdafx.h"
 #include "client.h"
 
-void main() {
-	std::string ip;
-	std::string port;
+int main() {
+	boost::asio::io_service io_service;
+	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(SERVER_IP), PORT_NUMBER);
 
-	std::cout << "IP 입력 : ";
-	getline(std::cin, ip, '\n');
-	std::cout << "Port 입력 : ";
-	getline(std::cin, port, '\n');
+	L::TCP_Client client(io_service);
 
-	io_service ioService;
-	tcp::endpoint endpoint(ip::address::from_string(ip), atoi(port.c_str()) );
+	client.Connect(endpoint);
 
-	L::TCPClient client(ioService, endpoint);
+	io_service.run();
 
-	std::cout << "네트워크 서비스 종료" << std::endl;
+	std::cout << "Network Service exit..." << std::endl;
+
 	getchar();
+	return 0;
 }
